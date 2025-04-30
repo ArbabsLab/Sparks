@@ -7,7 +7,8 @@ const app = express();
 dotenv.config();
 const PORT = process.env.PORT;
 
-app.use("/api/auth", authRoutes)
+app.use(express.json());
+app.use("/api/auth", authRoutes);
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     DBconnect();
