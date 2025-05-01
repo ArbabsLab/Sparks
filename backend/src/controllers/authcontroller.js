@@ -76,3 +76,24 @@ export const logout = (req, res) => {
         res.status(500).json({message: "Something went wrong."});
     }
 };
+
+export const update = async (req, res) => {
+    
+    try{
+        const {NewUsername} = req.body
+        const userID = req.user._id
+
+        const updateUser = await User.findByIdAndUpdate(userID, {username: NewUsername}, {new:true})
+        res.status(200).json({message: "Updated user"})
+    }catch(e){
+        res.status(500).json({message: "Something went wrong."});
+    }
+};
+
+export const checkAuth = (req, res) => {
+    try{
+        res.status(200).json(req.user)
+    } catch(e){
+        res.status(500).json({message: "Something went wrong"})
+    }
+}
