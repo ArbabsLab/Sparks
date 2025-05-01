@@ -14,4 +14,9 @@ router.post("/login", (req, res) => {
 router.post("/logout", (req, res) => {
     logout();
 })
+
+router.post("/update", (req, res) => {
+    update();
+})
+
 export default router;
