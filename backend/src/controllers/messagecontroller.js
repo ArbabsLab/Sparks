@@ -26,3 +26,21 @@ export const getMessage = async (req, res) => {
         res.status(500).json({message:e})
     }
 }
+
+export const sendMessage = async (req, res) => {
+    const me = req.user._id;
+    const {text, image} = req.body;
+    const { id: you} = req.params;
+
+    const newMessage = new Message({
+        image: image,
+        sender: me,
+        receiver: you,
+        text: text,
+    });
+
+    await newMessage.save()
+
+    res.status(201).json(newMessage)
+    
+}

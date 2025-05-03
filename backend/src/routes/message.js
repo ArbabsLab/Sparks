@@ -5,8 +5,8 @@ import { getMessage, getSidebar } from '../controllers/messagecontroller.js';
 const router = express.Router();
 
 router.get("/users", checkUser, getSidebar);
-router.get("/:id", checkUser, getMessage)
-
+router.get("/:id", checkUser, getMessage);
+router.post("/send/:id", checkUser, sendMessage);
 
 
 export default router;
