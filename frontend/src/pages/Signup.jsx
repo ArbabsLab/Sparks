@@ -14,14 +14,26 @@ const Signup = () => {
   })
 
   const {signup, isSignUp} = useAuthStore();
-  const validate = () => {}
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const success = validate()
-    if(success){
-      signup(form);
+  const validate = () => {
+    if (!form.username || !form.email || !form.password) {
+      toast.error("Please fill out all fields.");
+      return false;
     }
-  }
+    return true;
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validate()) {
+      try {
+        await signup(form);
+        toast.success("Account created");
+      } catch (e) {
+        toast.error(e.message || "Signup failed");
+      }
+    }
+  };
+  
   return (
     <div className="min-h-screen grid lg:grid-cols-1">
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
@@ -48,7 +60,7 @@ const Signup = () => {
                   type="text"
                   className={`input input-bordered w-full pl-3`}
                   placeholder="Example123"
-                  value={form.fullName}
+                  value={form.username}
                   onChange={(e) => setForm({ ...form, username: e.target.value })}
                 />
               </div>
