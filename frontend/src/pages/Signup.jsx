@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAuthStore } from '../store/useAuthStore';
-import { Eye, EyeOff, Loader2, Lock, Mail, Sparkles, User } from "lucide-react";
+import { Eye, EyeOff, Loader2, Sparkles,} from "lucide-react";
 import { Link } from "react-router-dom";
 
 import toast from "react-hot-toast";

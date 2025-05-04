@@ -27,7 +27,7 @@ const App = () => {
 
   return (
     <div>
-      {authUser && <Navbar />}
+      <Navbar />
       <Routes>
         <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />
         <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/" />} />
