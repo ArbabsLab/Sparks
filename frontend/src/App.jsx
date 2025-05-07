@@ -1,28 +1,27 @@
 import React, { useEffect } from 'react'
-import Navbar from './components/Navbar.jsx'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { Loader } from 'lucide-react'
+import { Toaster } from 'react-hot-toast'
+import { useAuthStore } from './store/useAuthStore.js'
+import { useThemeStore } from './store/useTheme.js'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
 import Settings from './pages/Settings.jsx'
 import Profile from './pages/Profile.jsx'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { useAuthStore } from './store/useAuthStore.js'
-import { Loader } from 'lucide-react'
-import { Toaster } from 'react-hot-toast'
-import { useThemeStore } from './store/useTheme.js'
+import Navbar from './components/Navbar.jsx'
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore()
-  const{theme} = useThemeStore();
+  const { theme } = useThemeStore()
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
 
   useEffect(() => {
     checkAuth()
   }, [checkAuth])
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    console.log("Current theme:", theme);
-  }, [theme])
 
   if (isCheckingAuth && !authUser) {
     return (
@@ -32,17 +31,24 @@ const App = () => {
     )
   }
 
+  const ProtectedRoute = ({ children }) => {
+    return authUser ? children : <Navigate to="/login" />
+  }
+
+  const PublicRoute = ({ children }) => {
+    return !authUser ? children : <Navigate to="/" />
+  }
+
   return (
     <div data-theme="aqua">
       <Navbar />
       <Routes>
-        <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />
-        <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/" />} />
-        <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/" />} />
-        <Route path="/settings" element={authUser ? <Settings /> : <Navigate to="/login" />} />
-        <Route path="/profile" element={authUser ? <Profile /> : <Navigate to="/login" />} />
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       </Routes>
-
       <Toaster />
     </div>
   )

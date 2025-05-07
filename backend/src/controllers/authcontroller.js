@@ -2,6 +2,18 @@ import bcrypt from 'bcryptjs';
 import User from '../models/usermodel.js';
 import { generateToken } from '../lib/utils.js';
 
+// Validation helpers
+const validateSignupInput = (username, email, password) => {
+    if (!username || !email || !password) {
+        return { isValid: false, message: "Cannot have empty fields" };
+    }
+    if (password.length < 8) {
+        return { isValid: false, message: "Password must be at least 8 characters." };
+    }
+    return { isValid: true };
+};
+
+// Auth controllers
 export const signup = async (req, res) => {
     const { username, email, password } = req.body;
     try {

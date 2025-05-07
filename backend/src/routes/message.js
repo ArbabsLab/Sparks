@@ -1,12 +1,22 @@
-import express from 'express';
-import { checkUser } from '../middleware/authmiddleware.js';
-import { getMessage, getSidebar,sendMessage } from '../controllers/messagecontroller.js';
+// Express imports
+import express from 'express'
 
-const router = express.Router();
+// Controller imports
+import {
+  getMessage,
+  getSidebar,
+  sendMessage
+} from '../controllers/messagecontroller.js'
 
-router.get("/users", checkUser, getSidebar);
-router.get("/:id", checkUser, getMessage);
-router.post("/send/:id", checkUser, sendMessage);
+// Middleware imports
+import { checkUser } from '../middleware/authmiddleware.js'
 
+// Create router
+const router = express.Router()
 
-export default router;
+// Protected message routes
+router.get("/users", checkUser, getSidebar)
+router.get("/:id", checkUser, getMessage)
+router.post("/send/:id", checkUser, sendMessage)
+
+export default router
