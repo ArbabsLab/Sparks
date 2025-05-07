@@ -3,7 +3,6 @@ import User from '../models/usermodel.js';
 
 export const checkUser = async (req, res, next) => {
     try {
-        console.log("[checkUser] Incoming request");
         const token = req.cookies.jwt;
 
         if (!token) {
@@ -12,7 +11,6 @@ export const checkUser = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWTSECRET);
-        console.log("[checkUser] Decoded token:", decoded);
 
         const user = await User.findById(decoded.userID).select("-password");
 
